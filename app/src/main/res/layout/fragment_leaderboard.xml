@@ -5,166 +5,236 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context=".ui.leaderboard.LeaderboardFragment">
 
     <!-- Level Count and Bar -->
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="95dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/usernameTv"
-            android:layout_width="5dp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="229dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="bottom"
-            android:text="User"
-            android:textSize="34sp" />
+            android:src="@drawable/ic_account_square_black_24dp" />
 
-        <TextView
-            android:id="@+id/levelTv"
-            android:layout_width="212dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:fontFamily="sans-serif-light"
-            android:gravity="bottom"
-            android:text="Level 38" />
+            android:gravity="center"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/usernameTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Jon Doe"
+                android:textSize="34sp" />
+
+            <TextView
+                android:id="@+id/userHandleTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="lordphooeyunderscore" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <!-- Current Rank Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/dailyStreakCountTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-black"
+                    android:gravity="center"
+                    android:text="5"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/dailyStreakHeaderTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Daily Streak" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Pomodoro Streak Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/currentRankCountTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:gravity="center"
+                    android:text="100+"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/currentRankHeaderTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Rank" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Completed Tasks Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/pomodoroCountTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:gravity="center"
+                    android:text="8"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/pomodoroHeaderTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Pomodoro" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:paddingTop="8sp"></LinearLayout>
 
-        <!-- ProgressBar for experience bar -->
-        <ProgressBar
-            android:id="@+id/expBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:max="100"
-            android:progress="75"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:orientation="vertical">
 
-        <!-- Experience points text -->
-        <TextView
-            android:id="@+id/expCountTv"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="750/1000 EXP"
-            android:textSize="16sp"
-            android:layout_marginLeft="8dp"
-            android:fontFamily="sans-serif" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="8sp"
+            android:paddingRight="8sp">
+
+            <!-- Background of the Progress Bar -->
+
+            <!-- Foreground/Progress Fill -->
+            <View
+                android:id="@+id/progressBarBackground"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/progress_bar_background" />
+
+            <View
+                android:id="@+id/progressBarForeground"
+                android:layout_width="300dp"
+                android:layout_height="20dp"
+                android:background="@drawable/progress_bar_foreground" />
+
+            <!-- Level Marker Icon -->
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="8sp"
+            android:paddingRight="8sp">
+
+            <TextView
+                android:id="@+id/levelCountTv"
+                android:layout_width="186dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="LEVEL 5"
+                android:textColor="@color/red_700"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/expCountTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="120/200 exp" />
+        </LinearLayout>
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/weeklyLeaderboardHeaderTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="center"
+        android:text="Weekly Leaderboard"
+        android:textSize="24sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!-- Current Rank and Pomodoro Streak -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <!-- Current Rank Column -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/currentRankTitleTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Current Rank"
-                android:textSize="18sp"
-                android:fontFamily="sans-serif-medium" />
-
-            <TextView
-                android:id="@+id/currentRankTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rank #5"
-                android:textSize="24sp"
-                android:fontFamily="sans-serif-bold" />
-        </LinearLayout>
-
-        <!-- Pomodoro Streak Column -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/streakTitleTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pomodoro Streak"
-                android:textSize="18sp"
-                android:fontFamily="sans-serif-medium" />
-
-            <TextView
-                android:id="@+id/pomodoroStreakTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Streak: 8"
-                android:textSize="24sp"
-                android:fontFamily="sans-serif-bold" />
-        </LinearLayout>
-    </LinearLayout>
 
     <!-- Leaderboard Header -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:background="#E0E0E0">
-
-        <TextView
-            android:id="@+id/rankHeaderTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Rank #"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif" />
-
-        <TextView
-            android:id="@+id/usernameHeaderTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Username"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif" />
-
-        <TextView
-            android:id="@+id/streakHeaderTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Pomodoro Streak"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif" />
-    </LinearLayout>
 
     <!-- RecyclerView for Leaderboard Entries -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/leaderboardRv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
-        android:scrollbars="vertical" />
 </LinearLayout>
