@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pomodoro Length Options -->
+    <string-array name="pomodoro_length_options">
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+        <item>25 minutes</item>
+        <item>30 minutes</item>
+    </string-array>
+
+    <!-- Short Break Length Options -->
+    <string-array name="short_break_length_options">
+        <item>3 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+    </string-array>
+
+    <!-- Long Break Length Options -->
+    <string-array name="long_break_length_options">
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+        <item>30 minutes</item>
+    </string-array>
+
+    <!-- Long Break After X Pomodoros -->
+    <string-array name="long_break_after_options">
+        <item>2 Pomodoros</item>
+        <item>3 Pomodoros</item>
+        <item>4 Pomodoros</item>
+        <item>5 Pomodoros</item>
+    </string-array>
+
+    <!-- Alarm Sound Options -->
+    <string-array name="alarm_sound_options">
+        <item>Classic</item>
+        <item>Chime</item>
+        <item>Beep</item>
+        <item>Bell</item>
+        <item>Nature</item>
+    </string-array>
+</resources>
