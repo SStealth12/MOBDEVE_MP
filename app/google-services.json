@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "426613069059",
+    "project_id": "machineprojectestanols13",
+    "storage_bucket": "machineprojectestanols13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426613069059:android:d5624f14237fdca6ecc536",
+        "android_client_info": {
+          "package_name": "com.mobdeve.s13.estanol.miguelfrancis.mp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfVqLzK_ckWsi9rKgM9YRjQfJN1hgAHsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
