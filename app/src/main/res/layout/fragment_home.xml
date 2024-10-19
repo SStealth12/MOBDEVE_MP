@@ -34,13 +34,13 @@
             <!-- Circular Progress Bar -->
             <ProgressBar
                 android:id="@+id/circularProgressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="100"
-                android:progressDrawable="@drawable/circular_progress_bar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                android:progressDrawable="@drawable/circular_progress_bar" />
 
             <!-- Timer text inside the circular progress bar -->
             <TextView
