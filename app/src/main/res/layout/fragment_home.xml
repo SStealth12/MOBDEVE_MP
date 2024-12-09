@@ -1,136 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeFragment">
+    android:gravity="center"
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/userGreetingTv"
-        android:layout_width="match_parent"
+        android:id="@+id/tvTimer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="Good Evening, User"
-        android:textSize="34sp" />
+        android:text="25:00"
+        android:textSize="48sp"
+        android:layout_marginBottom="32dp"
+        android:textColor="@android:color/black" />
 
     <LinearLayout
-        android:id="@+id/pomodoroTimerLl"
-        android:layout_width="match_parent"
-        android:layout_height="295dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <!-- Circular progress bar for countdown -->
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <!-- Circular Progress Bar -->
-            <ProgressBar
-                android:id="@+id/circularProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:indeterminate="false"
-                android:max="100"
-                android:progress="100"
-                android:progressDrawable="@drawable/circular_progress_bar" />
-
-            <!-- Timer text inside the circular progress bar -->
-            <TextView
-                android:id="@+id/timerTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/ds_digib"
-                android:gravity="center"
-                android:text="25:00"
-                android:textColor="@android:color/black"
-                android:textSize="48sp" />
-        </FrameLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/timerButtonsLl"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingTop="16dp">
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/startBtn"
-            android:layout_width="133dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Start"
-            android:visibility="visible" />
-
-        <Button
-            android:id="@+id/pauseBtn"
+            android:id="@+id/btnStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/btnPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Pause"
-            android:visibility="gone" />
+            android:layout_marginStart="16dp"
+            android:enabled="false" />
 
         <Button
-            android:id="@+id/continueBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16sp"
-            android:text="Continue"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/stopBtn"
+            android:id="@+id/btnStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stop"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/addTaskIv"
-            android:layout_width="93dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ic_add_black_24dp" />
-
-        <EditText
-            android:id="@+id/taskDescriptionPt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="Add a task..."
-            android:inputType="text" />
+            android:layout_marginStart="16dp"
+            android:enabled="false" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/currentTaskTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:paddingTop="4sp"
-        android:text="Current Tasks"
-        android:textSize="24sp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/taskListRv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </LinearLayout>

@@ -29,9 +29,8 @@ class StatusFragment : Fragment() {
         _binding = FragmentStatusBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        setupDailyBarChart(binding.dailyTimeGraph)
-        setupWeeklyLineChart(binding.weeklyTimeGraph)
-        setupDailyTaskPieChart(binding.dailyTaskGraph)
+        setupDailyBarChart(binding.dailyChart)
+        setupWeeklyLineChart(binding.weeklyChart)
 
         return root
     }

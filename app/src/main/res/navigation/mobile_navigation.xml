@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_leaderboard"
-        android:name="com.mobdeve.s13.estanol.miguelfrancis.mp.ui.leaderboard.LeaderboardFragment"
-        android:label="@string/title_leaderboard"
-        tools:layout="@layout/fragment_leaderboard" />
-
-    <fragment
         android:id="@+id/navigation_status"
         android:name="com.mobdeve.s13.estanol.miguelfrancis.mp.ui.status.StatusFragment"
         android:label="@string/title_status"

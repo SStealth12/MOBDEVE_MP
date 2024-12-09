@@ -1,117 +1,112 @@
 package com.mobdeve.s13.estanol.miguelfrancis.mp.ui.home
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.mobdeve.s13.estanol.miguelfrancis.mp.PomodoroService
 import com.mobdeve.s13.estanol.miguelfrancis.mp.R
 
 class HomeFragment : Fragment() {
 
-    private lateinit var circularProgressBar: ProgressBar
-    private lateinit var timerTv: TextView
-    private lateinit var startBtn: Button
-    private lateinit var pauseBtn: Button
-    private lateinit var continueBtn: Button
-    private lateinit var stopBtn: Button
-    private lateinit var timer: CountDownTimer
-    private var timeRemaining = 25 * 60 * 1000L // 25 minutes in milliseconds
-    private var isPaused = false
-    private val totalDuration = 25 * 60 * 1000L // Total time for 25 minutes
+    private lateinit var tvTimer: TextView
+    private lateinit var btnStart: Button
+    private lateinit var btnPause: Button
+    private lateinit var btnStop: Button
+
+    private val timerReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val timeLeft = intent?.getLongExtra(PomodoroService.EXTRA_TIME_LEFT, 0L) ?: 0L
+            val isRunning = intent?.getBooleanExtra(PomodoroService.EXTRA_IS_RUNNING, false) ?: false
+            val isWorkPhase = intent?.getBooleanExtra(PomodoroService.EXTRA_IS_WORK_PHASE, true) ?: true
+            updateUI(timeLeft, isRunning, isWorkPhase)
+
+            if (timeLeft == 0L && !isRunning) {
+                // Log the phase for debugging
+                val phase = if (isWorkPhase) "Work Phase" else "Break Phase"
+                Log.d("PomodoroService", "Phase switched to: $phase")
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // Initialize views
-        circularProgressBar = root.findViewById(R.id.circularProgressBar)
-        timerTv = root.findViewById(R.id.timerTv)
-        startBtn = root.findViewById(R.id.startBtn)
-        pauseBtn = root.findViewById(R.id.pauseBtn)
-        continueBtn = root.findViewById(R.id.continueBtn)
-        stopBtn = root.findViewById(R.id.stopBtn)
+        tvTimer = view.findViewById(R.id.tvTimer)
+        btnStart = view.findViewById(R.id.btnStart)
+        btnPause = view.findViewById(R.id.btnPause)
+        btnStop = view.findViewById(R.id.btnStop)
 
-        // Start button logic
-        startBtn.setOnClickListener {
-            startTimer()
-            startBtn.visibility = View.GONE
-            pauseBtn.visibility = View.VISIBLE
-        }
+        btnStart.setOnClickListener { startTimer() }
+        btnPause.setOnClickListener { pauseTimer() }
+        btnStop.setOnClickListener { stopTimer() }
 
-        // Pause button logic
-        pauseBtn.setOnClickListener {
-            pauseTimer()
-            pauseBtn.visibility = View.GONE
-            continueBtn.visibility = View.VISIBLE
-            stopBtn.visibility = View.VISIBLE
-        }
+        return view
+    }
 
-        // Continue button logic
-        continueBtn.setOnClickListener {
-            continueTimer()
-            continueBtn.visibility = View.GONE
-            stopBtn.visibility = View.GONE
-            pauseBtn.visibility = View.VISIBLE
-        }
+    @SuppressLint("NewApi")
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter(PomodoroService.BROADCAST_UPDATE)
+        requireContext().registerReceiver(timerReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+    }
 
-        // Stop button logic
-        stopBtn.setOnClickListener {
-            stopTimer()
-            continueBtn.visibility = View.GONE
-            stopBtn.visibility = View.GONE
-            startBtn.visibility = View.VISIBLE
-        }
-
-        return root
+    override fun onPause() {
+        super.onPause()
+        requireContext().unregisterReceiver(timerReceiver)
     }
 
     private fun startTimer() {
-        timer = object : CountDownTimer(timeRemaining, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                timeRemaining = millisUntilFinished
-                updateTimerText()
-                updateProgressBar()
-            }
-
-            override fun onFinish() {
-                timerTv.text = "00:00"
-                circularProgressBar.progress = 0
-            }
-        }.start()
+        val intent = Intent(requireContext(), PomodoroService::class.java).apply {
+            action = PomodoroService.ACTION_START
+        }
+        requireContext().startService(intent)
     }
 
     private fun pauseTimer() {
-        timer.cancel()
-        isPaused = true
-    }
-
-    private fun continueTimer() {
-        startTimer() // Continue from where it left off
-        isPaused = false
+        val intent = Intent(requireContext(), PomodoroService::class.java).apply {
+            action = PomodoroService.ACTION_PAUSE
+        }
+        requireContext().startService(intent)
     }
 
     private fun stopTimer() {
-        timer.cancel()
-        timeRemaining = totalDuration // Reset to 25 minutes
-        updateTimerText()
-        circularProgressBar.progress = 100
+        val intent = Intent(requireContext(), PomodoroService::class.java).apply {
+            action = PomodoroService.ACTION_STOP
+        }
+        requireContext().startService(intent)
     }
 
-    private fun updateTimerText() {
-        val minutes = (timeRemaining / 1000) / 60
-        val seconds = (timeRemaining / 1000) % 60
-        timerTv.text = String.format("%02d:%02d", minutes, seconds)
-    }
+    private fun updateUI(timeLeft: Long, isRunning: Boolean, isWorkPhase: Boolean) {
+        val minutes = (timeLeft / 1000) / 60
+        val seconds = (timeLeft / 1000) % 60
+        tvTimer.text = String.format("%02d:%02d", minutes, seconds)
 
-    private fun updateProgressBar() {
-        val progress = (timeRemaining.toFloat() / totalDuration.toFloat()) * 100
-        circularProgressBar.progress = progress.toInt()
+        if (!isRunning && timeLeft == 0L) {
+            btnStart.isEnabled = true
+            btnPause.isEnabled = false
+            btnStop.isEnabled = false
+
+            // Show the phase that is about to start
+            val nextPhase = if (isWorkPhase) "Break Phase" else "Work Phase"
+            tvTimer.text = "Next: $nextPhase"
+        } else {
+            btnStart.isEnabled = !isRunning
+            btnPause.isEnabled = isRunning
+            btnStop.isEnabled = isRunning
+        }
     }
 }
+

@@ -10,73 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Account Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:text="Account"
-                android:textSize="34sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingEnd="8dp">
-
-                <ImageView
-                    android:id="@+id/accountIconIv"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_account_square_black_24dp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:paddingStart="16dp">
-
-                    <TextView
-                        android:id="@+id/usernameTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Username"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/userHandleTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@userhandle"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/logoutBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical"
-                    android:backgroundTint="@color/design_default_color_error"
-                    android:text="Log Out"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Pomodoro Settings -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,7 +26,6 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <!-- Pomodoro Length -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +48,6 @@
                     android:entries="@array/pomodoro_length_options" />
             </LinearLayout>
 
-            <!-- Short Break Length -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,13 +55,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/shortBreakLengthTv"
+                    android:id="@+id/breakLengthTv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_vertical"
-                    android:text="Short Break Length" />
+                    android:text="Break Length" />
 
                 <Spinner
                     android:id="@+id/shortBreakLengthDropdown"
@@ -139,54 +70,8 @@
                     android:entries="@array/short_break_length_options" />
             </LinearLayout>
 
-            <!-- Long Break Length -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/longBreakLengthTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="Long Break Length" />
-
-                <Spinner
-                    android:id="@+id/longBreakLengthDropdown"
-                    android:layout_width="192dp"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/long_break_length_options" />
-            </LinearLayout>
-
-            <!-- Long Break After Pomodoros -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/longBreakAfterPomodorosTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="Long Break After" />
-
-                <Spinner
-                    android:id="@+id/longBreakAfterDropdown"
-                    android:layout_width="192dp"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/long_break_after_options" />
-            </LinearLayout>
         </LinearLayout>
 
-        <!-- Alarm Sound Settings -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -203,7 +88,6 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <!-- Pomodoro Alarm -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -223,10 +107,9 @@
                     android:id="@+id/pomodoroAlarmDropdown"
                     android:layout_width="192dp"
                     android:layout_height="wrap_content"
-                    android:entries="@array/alarm_sound_options" />
+                    android:entries="@array/work_alarm_sound_options" />
             </LinearLayout>
 
-            <!-- Break Alarm -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -246,145 +129,11 @@
                     android:id="@+id/breakAlarmDropdown"
                     android:layout_width="192dp"
                     android:layout_height="wrap_content"
-                    android:entries="@array/alarm_sound_options" />
+                    android:entries="@array/break_alarm_sound_options" />
             </LinearLayout>
 
-            <!-- White Noise -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/whiteNoiseTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="White Noise" />
-
-                <Spinner
-                    android:id="@+id/whiteNoiseDropdown"
-                    android:layout_width="192dp"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/alarm_sound_options" />
-            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF"
-            android:orientation="vertical"
-            android:padding="8sp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:text="Notification Settings"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <!-- Pomodoro Notification -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/pomodoroNotificationTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="Pomodoro Notification" />
-
-                <Switch
-                    android:id="@+id/pomodoroNotificationSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <!-- Pomodoro Notification Volume -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/pomodoroNotificationVolumeTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="Notification Volume" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/pomodoroNotificationVolumeSlider"
-                    android:layout_width="192dp"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:value="50"
-                    android:valueFrom="0"
-                    android:valueTo="100" />
-            </LinearLayout>
-
-            <!-- Break Notification -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/breakNotificationTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="Break Notification" />
-
-                <Switch
-                    android:id="@+id/breakNotificationSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <!-- Break Notification Volume -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/breakNotificationVolumeTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="Break Notification Volume" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/breakNotificationVolumeSlider"
-                    android:layout_width="192dp"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:value="50"
-                    android:valueFrom="0"
-                    android:valueTo="100" />
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 </ScrollView>
 
