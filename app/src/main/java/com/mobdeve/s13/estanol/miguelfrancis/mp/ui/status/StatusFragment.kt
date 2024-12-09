@@ -1,101 +1,154 @@
 package com.mobdeve.s13.estanol.miguelfrancis.mp.ui.status
 
-import android.graphics.Color
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.mobdeve.s13.estanol.miguelfrancis.mp.R
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.mobdeve.s13.estanol.miguelfrancis.mp.PomodoroService
 import com.mobdeve.s13.estanol.miguelfrancis.mp.databinding.FragmentStatusBinding
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class StatusFragment : Fragment() {
 
-    private var _binding: FragmentStatusBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentStatusBinding
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val statusViewModel = ViewModelProvider(this).get(StatusViewModel::class.java)
-
-        _binding = FragmentStatusBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        setupDailyBarChart(binding.dailyChart)
-        setupWeeklyLineChart(binding.weeklyChart)
-
-        return root
+    ): View? {
+        binding = FragmentStatusBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        sharedPreferences = requireContext().getSharedPreferences("PomodoroSettings", Context.MODE_PRIVATE)
+
+        updateStatsUI()
+        setupDailyGraph()
+        setupWeeklyGraph()
     }
 
-    // Set up the daily bar chart (Dummy data for now)
-    private fun setupDailyBarChart(barChart: BarChart) {
-        val entries = ArrayList<BarEntry>()
-        val hoursOfDay = arrayOf(8, 9, 10, 11, 12, 13, 14, 15)  // Example time in hours
-        val pomodoroMinutes = arrayOf(25f, 50f, 15f, 40f, 35f, 60f, 30f, 45f)  // Pomodoro minutes
+    private fun updateStatsUI() {
+        val dailyCount = sharedPreferences.getInt("daily_pomodoro_count", 0)
+        val weeklyCount = sharedPreferences.getInt("weekly_pomodoro_count", 0)
+        val streak = sharedPreferences.getInt("daily_streak", 0)
 
-        for (i in hoursOfDay.indices) {
-            entries.add(BarEntry(hoursOfDay[i].toFloat(), pomodoroMinutes[i]))
-        }
+        binding.dailyPomodoroCountTv.text = dailyCount.toString()
+        binding.weeklyPomodoroCountTv.text = weeklyCount.toString()
+        binding.streakCountTv.text = streak.toString()
+    }
 
-        val dataSet = BarDataSet(entries, "Pomodoro Minutes")
-        dataSet.colors = ColorTemplate.MATERIAL_COLORS.asList()  // Use material color scheme
+    @SuppressLint("NewApi")
+    private fun setupDailyGraph() {
+        val today = LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_DATE)
+        val dailyPomodoroMapJson = sharedPreferences.getString("weekly_pomodoro_map", "{}")
+        val gson = Gson()
+        val map: Map<String, Int> = gson.fromJson(
+            dailyPomodoroMapJson,
+            object : TypeToken<Map<String, Int>>() {}.type
+        )
+
+        val todayCount = map[today] ?: 0
+        val entries = listOf(BarEntry(1f, todayCount.toFloat()))
+
+        val dataSet = BarDataSet(entries, "Pomodoro Sessions")
         val data = BarData(dataSet)
-        data.barWidth = 0.9f
 
-        barChart.data = data
-        barChart.description.isEnabled = false
-        barChart.setFitBars(true)  // Make bars fit nicely into chart
-        barChart.invalidate()  // Refresh the chart
+        binding.dailyChart.data = data
+        binding.dailyChart.invalidate()
     }
 
-    // Set up the weekly line chart (Dummy data for now)
-    private fun setupWeeklyLineChart(lineChart: LineChart) {
-        val entries = ArrayList<Entry>()
-        val dates = arrayOf(19f, 20f, 21f, 22f, 23f, 24f, 25f)  // Dates (e.g., Oct 19, Oct 20)
-        val pomodoroMinutes = arrayOf(120f, 100f, 80f, 140f, 60f, 100f, 110f)  // Pomodoro minutes
+    private fun setupWeeklyGraph() {
+        val weeklyPomodoroMapJson = sharedPreferences.getString("weekly_pomodoro_map", "{}")
+        val gson = Gson()
+        val map: Map<String, Int> = gson.fromJson(
+            weeklyPomodoroMapJson,
+            object : TypeToken<Map<String, Int>>() {}.type
+        )
 
-        for (i in dates.indices) {
-            entries.add(Entry(dates[i], pomodoroMinutes[i]))
+        val entries = map.entries.mapIndexed { index, entry ->
+            Entry(index.toFloat(), entry.value.toFloat())
         }
 
-        val dataSet = LineDataSet(entries, "Pomodoro Minutes")
-        dataSet.color = Color.BLUE
-        dataSet.lineWidth = 2f
-        dataSet.setCircleColor(Color.BLUE)
-
+        val dataSet = LineDataSet(entries, "Pomodoro Sessions")
         val data = LineData(dataSet)
-        lineChart.data = data
-        lineChart.description.isEnabled = false
-        lineChart.invalidate()  // Refresh the chart
+
+        binding.weeklyChart.data = data
+        binding.weeklyChart.invalidate()
     }
 
-    // Set up the daily task breakdown pie chart (Dummy data for now)
-    private fun setupDailyTaskPieChart(pieChart: PieChart) {
-        val entries = ArrayList<PieEntry>()
-        entries.add(PieEntry(40f, "Work"))
-        entries.add(PieEntry(30f, "Study"))
-        entries.add(PieEntry(20f, "Exercise"))
-        entries.add(PieEntry(10f, "Leisure"))
+    private val updateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateStatsUI() // Refresh stats
+            setupDailyGraph() // Refresh daily graph
+            setupWeeklyGraph() // Refresh weekly graph
+        }
+    }
 
-        val dataSet = PieDataSet(entries, "Task Breakdown")
-        dataSet.colors = ColorTemplate.MATERIAL_COLORS.asList()  // Use material color scheme
+    @SuppressLint("NewApi")
+    override fun onStart() {
+        super.onStart()
+        val filter = IntentFilter(PomodoroService.BROADCAST_UPDATE)
+        requireContext().registerReceiver(updateReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+    }
 
-        val data = PieData(dataSet)
-        pieChart.data = data
-        pieChart.description.isEnabled = false
-        pieChart.invalidate()  // Refresh the chart
+    override fun onStop() {
+        super.onStop()
+        requireContext().unregisterReceiver(updateReceiver)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateStreak()
+        updateStatsUI() // Ensure the updated streak is displayed
+    }
+
+    @SuppressLint("NewApi")
+    private fun updateStreak() {
+        val currentDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+        val lastOpenedDate = sharedPreferences.getString("last_opened_date", null)
+        var streak = sharedPreferences.getInt("daily_streak", 0)
+
+        val editor = sharedPreferences.edit()
+
+        if (lastOpenedDate == null || lastOpenedDate != currentDate) {
+            if (lastOpenedDate != null && LocalDate.parse(lastOpenedDate).isBefore(LocalDate.now().minusDays(1))) {
+                // Missed a day, reset streak to 1
+                streak = 1
+            } else {
+                // Increment streak
+                streak += 1
+            }
+
+            // Update SharedPreferences with the new streak and current date
+            editor.putString("last_opened_date", currentDate)
+            editor.putInt("daily_streak", streak)
+            editor.apply()
+        }
     }
 }

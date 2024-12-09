@@ -13,6 +13,12 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import android.media.MediaPlayer
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleAfternoonNotification
+import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleMorningNotification
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class PomodoroService : Service() {
 
@@ -110,16 +116,18 @@ class PomodoroService : Service() {
             override fun onFinish() {
                 isRunning = false
 
+                // Play alarm based on the phase
                 if (isWorkPhase) {
-                    breakEndAlarm?.start()
-                } else {
                     workEndAlarm?.start()
+                    updateStatsOnPomodoroCompletion() // Update stats on work phase completion
+                } else {
+                    breakEndAlarm?.start()
                 }
 
                 isWorkPhase = !isWorkPhase
                 timeLeftInMillis = if (isWorkPhase) getWorkDuration() else getRestDuration()
 
-                Log.d("PomodoroService", "Phase switched to: ${if (isWorkPhase) "Work Phase" else "Break Phase"}")
+                // Broadcast and notification updates
                 broadcastUpdate()
                 updateNotification()
             }
@@ -213,6 +221,61 @@ class PomodoroService : Service() {
         val minutes = (timeInMillis / 1000) / 60
         val seconds = (timeInMillis / 1000) % 60
         return String.format("%02d:%02d", minutes, seconds)
+    }
+
+    @SuppressLint("NewApi")
+    private fun updateStatsOnPomodoroCompletion() {
+        val editor = sharedPreferences.edit()
+        val currentDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
+
+        // Daily Pomodoro Count
+        val lastUpdatedDate = sharedPreferences.getString("last_updated_date", "")
+        var dailyCount = sharedPreferences.getInt("daily_pomodoro_count", 0)
+        if (lastUpdatedDate != currentDate) {
+            editor.putString("last_updated_date", currentDate)
+            editor.putInt("daily_pomodoro_count", 1) // Reset daily count for a new day
+        } else {
+            dailyCount += 1
+            editor.putInt("daily_pomodoro_count", dailyCount)
+        }
+
+        // Weekly Pomodoro Count
+        val weeklyPomodoroMap = sharedPreferences.getString("weekly_pomodoro_map", "{}")
+        val updatedMap = updateWeeklyPomodoroMap(weeklyPomodoroMap, currentDate)
+        editor.putString("weekly_pomodoro_map", updatedMap)
+        editor.putInt("weekly_pomodoro_count", calculateWeeklyCount(updatedMap))
+
+        // Apply changes
+        editor.apply()
+    }
+
+    @SuppressLint("NewApi")
+    private fun updateWeeklyPomodoroMap(mapJson: String?, currentDate: String): String {
+        val gson = Gson()
+        val map: MutableMap<String, Int> = if (mapJson.isNullOrEmpty()) {
+            mutableMapOf()
+        } else {
+            gson.fromJson(mapJson, object : TypeToken<MutableMap<String, Int>>() {}.type)
+        }
+
+        // Add or increment today's entry
+        map[currentDate] = (map[currentDate] ?: 0) + 1
+
+        // Remove entries older than 7 days
+        val sevenDaysAgo = LocalDate.now().minusDays(7)
+        map.entries.removeIf { (date, _) -> LocalDate.parse(date).isBefore(sevenDaysAgo) }
+
+        return gson.toJson(map)
+    }
+
+    private fun calculateWeeklyCount(mapJson: String?): Int {
+        val gson = Gson()
+        val map: Map<String, Int> = if (mapJson.isNullOrEmpty()) {
+            emptyMap()
+        } else {
+            gson.fromJson(mapJson, object : TypeToken<Map<String, Int>>() {}.type)
+        }
+        return map.values.sum()
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
