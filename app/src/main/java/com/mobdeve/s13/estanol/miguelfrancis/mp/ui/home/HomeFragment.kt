@@ -13,8 +13,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleAfternoonNotification
-import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleMorningNotification
 import com.mobdeve.s13.estanol.miguelfrancis.mp.PomodoroService
 import com.mobdeve.s13.estanol.miguelfrancis.mp.R
 

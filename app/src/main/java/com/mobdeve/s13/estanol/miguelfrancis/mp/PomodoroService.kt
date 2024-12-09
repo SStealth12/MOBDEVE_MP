@@ -15,8 +15,6 @@ import androidx.core.app.NotificationCompat
 import android.media.MediaPlayer
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleAfternoonNotification
-import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleMorningNotification
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

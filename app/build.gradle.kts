@@ -56,7 +56,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.code.gson:gson:2.8.9")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation(libs.places)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
