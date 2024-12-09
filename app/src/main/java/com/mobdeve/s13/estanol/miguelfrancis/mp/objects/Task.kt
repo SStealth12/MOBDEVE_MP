@@ -1,16 +1,11 @@
 package com.mobdeve.s13.estanol.miguelfrancis.mp.objects
 
-class Task {
-    var taskName: String
-        private set
-    var totalPomodoro: Int = 0
-        private set
-    var taskStatus: String = "Active"
-        private set
+data class Task(
+    val id: Int,
+    var title: String,       // Task title
+    var dueDate: String?,    // Nullable due date (or "None")
+    var type: String,         // Type of task (e.g., "School", "Work", "None")
+    var isCompleted: Boolean
+)
 
-    constructor(taskName: String, totalPomodoro: Int, taskStatus: String) {
-        this.taskName = taskName
-        this.totalPomodoro = totalPomodoro
-        this.taskStatus = taskStatus
-    }
-}
+

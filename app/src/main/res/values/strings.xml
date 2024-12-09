@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MachineProject</string>
     <string name="title_home">Home</string>
-    <string name="title_leaderboard">Leaderboard</string>
+    <string name="title_task">Task</string>
     <string name="title_status">Status</string>
     <string name="title_account">Account</string>
 </resources>

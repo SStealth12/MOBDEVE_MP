@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_task"
+        android:name="com.mobdeve.s13.estanol.miguelfrancis.mp.ui.task.TaskFragment"
+        android:label="@string/title_task"
+        tools:layout="@layout/fragment_task" />
+
+    <fragment
         android:id="@+id/navigation_status"
         android:name="com.mobdeve.s13.estanol.miguelfrancis.mp.ui.status.StatusFragment"
         android:label="@string/title_status"

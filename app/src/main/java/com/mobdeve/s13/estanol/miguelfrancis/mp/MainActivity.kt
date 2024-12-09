@@ -8,14 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleAfternoonNotification
-import com.mobdeve.s13.estanol.miguelfrancis.mp.NotificationScheduler.scheduleMorningNotification
 import com.mobdeve.s13.estanol.miguelfrancis.mp.databinding.ActivityMainBinding
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,19 +25,16 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        // Schedule notifications
-        scheduleMorningNotification(this)
-        scheduleAfternoonNotification(this)
-
         Log.d("MainActivity", "NavController: $navController")
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home,
+                R.id.navigation_home, R.id.navigation_task,
                 R.id.navigation_status, R.id.navigation_account
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
-
 }
