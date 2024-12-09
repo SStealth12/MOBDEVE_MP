@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             if (!alarmManager.canScheduleExactAlarms()) {
-                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
-                startActivity(intent)
+                Log.d("MainActivity", "Requesting exact alarm permission...")
+                requestExactAlarmPermission() // Request permission if it isn't granted
             }
         }
 
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Change from Build.VERSION_CODES.S
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelName = "Pomodoro Notifications"
             val description = "Reminders for your Pomodoro sessions"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("PomodoroPrefs", Context.MODE_PRIVATE)
         val notificationsSet = sharedPreferences.getBoolean("NOTIFICATIONS_SET", false)
 
-        if (!notificationsSet) {
+        if (!notificationsSet && canScheduleExactAlarms()) {
             // Morning notification at 9 AM
             scheduleNotification(9, 0, "Start your Pomodoro session!", 1001)
 
@@ -87,8 +87,27 @@ class MainActivity : AppCompatActivity() {
             scheduleNotification(14, 0, "Don't forget your Pomodoro session!", 1002)
 
             sharedPreferences.edit().putBoolean("NOTIFICATIONS_SET", true).apply()
+        } else if (!canScheduleExactAlarms()) {
+            requestExactAlarmPermission() // Request permission if not granted
         }
     }
+
+    private fun canScheduleExactAlarms(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.canScheduleExactAlarms()
+        } else {
+            true
+        }
+    }
+
+    private fun requestExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+            startActivity(intent)
+        }
+    }
+
 
     private fun scheduleNotification(hour: Int, minute: Int, message: String, notificationId: Int) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -125,7 +144,6 @@ class MainActivity : AppCompatActivity() {
             calendar.timeInMillis,
             pendingIntent
         )
-
 
         Log.d("MainActivity", "Notification scheduled with ID $notificationId for time ${calendar.time}")
     }
